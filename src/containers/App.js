@@ -2,7 +2,8 @@ import React, { PureComponent } from 'react';
 import classes from './App.css';
 import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit';
-import WithClass from '../hoc/WithClass';
+import withClass from '../hoc/withClass';
+import Aux from '../hoc/Aux';
 
 class App extends PureComponent {
   constructor(props){
@@ -35,7 +36,9 @@ console.log('[did App.js] component DID Update');
      {id:'a1',name: 'Haider', age: 32},
      {id:'a2',name: 'Jasmine', age:6}
    ],
-   showPerson : false
+   otherState:'some other state',
+   showPerson : false,
+   toggleClicked :0
   }
 
   switchHandler = (nName) =>{
@@ -71,7 +74,12 @@ console.log('[did App.js] component DID Update');
   }
   togglePersonHandler =() => {
     const doesShow = this.state.showPerson;
-    this.setState({showPerson: !doesShow});
+    this.setState((prevState,props) => {
+      return {
+        showPerson: !doesShow, 
+        toggleClicked: prevState.toggleClicked + 1
+        };
+    });
   }
  
   render() {
@@ -88,7 +96,7 @@ console.log('[did App.js] component DID Update');
 
 
    return (
-    <WithClass classes={classes.App}>
+    <Aux>
       <button onClick={()=>{this.setState({showPersons: true}) }}>Show Person</button>
        <Cockpit 
        appTitle={this.props.title}
@@ -96,11 +104,11 @@ console.log('[did App.js] component DID Update');
        persons={this.state.persons}
        clicked={this.togglePersonHandler}/>
      {persons}
-      </WithClass>
+      </Aux>
  
    );
   // return React.createElement('div', {className:'App'}, React.createElement('h1', null, 'hi its me'));
   }
 }
 
-export default App;
+export default withClass(App, classes.App);

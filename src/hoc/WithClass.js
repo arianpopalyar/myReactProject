@@ -1,7 +1,24 @@
-import React from 'react';
-const withClass = (props) => {
-    <div class={props.classes}>
-        {props.children}
-    </div>
+import React, {Component }from 'react';
+//import React from 'react';
+// const withClass = (WrappedComponent, className) => {
+//     return (props) =>(
+//         <div className={className}>
+//         <WrappedComponent {...props}/>
+//         </div>
+//         )
+// }
+
+//class full component 
+const withClass = (WrappedComponent, className) => {
+    return class extends Component {
+        render(){
+            return (
+                <div className={className}>
+                    <WrappedComponent {...this.props}/>
+                </div>
+            )
+        }
+    }
 }
+
 export default withClass;
